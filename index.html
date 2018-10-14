@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="cs">  
+  <head>    
+    <meta charset="utf-8" />             	      
+	<link href="css/style.css" type="text/css" rel="stylesheet" /> 	
+    <title>Packetové firewally – iptables (NAT) – Petr Nosek</title>                        
+  </head>       
+  <body>             
+    <div id="root">                   
+      <div id="nadpis">
+      <h1>Packetové firewally – iptables (NAT)</h1>
+	    <h2><a href="mailto:st49669@student.upce.cz">Petr Nosek</a></h2>
+		 <h3>14. 11. 2017</h3>
+	    <!--<h2><a href="mailto:st49669@student.upce.cz">st49669@student.upce.cz</a></h2>                   -->
+      </div>                   
+      <div class="podcast" id="prvni">      
+                        
+        <h2 id="obsah">Obsah</h2>
+		
+        <ol>                                                           
+          <li>          
+          <a href="#1">Iptables</a>           
+          </li>                               
+          <li>          
+          <a href="#2">NAT</a>          
+          </li>                               
+          <li>       
+          <a href="#3">Tabulka nat</a>          
+          </li> 
+		  <li>          
+		  <a href="#4">DNAT a REDIRECT</a>           
+		  </li>                                                             
+		  <li>          
+		  <a href="#5">SNAT a MASQUERADE</a>           
+		  </li>                               
+			<li>          
+          <a href="#6">Tabulka mangle</a>         
+          </li>
+			<li>          
+          <a href="#7">MSS clamping</a>         
+          </li>
+			<li>          
+          <a href="#8">Literatura</a>         
+          </li> 		  
+        </ol>   
+		
+      </div>                                       
+      <div class="podcast">                        
+        <h2 id="1">Iptables</h2>                         
+        <p>Iptables je mocný nástroj, který umožňuje úplnou práci se síťovou komunikací. Je využíván na linuxových a&nbsp;unixových systémech. Své uplatnění nachází při vytváření pravidel pro filtrování a&nbsp;úpravu paketů&nbsp;IP. Tato pravidla jsou po vytvoření zapsána do jedné ze tří tabulek: <b>filter</b>, <b>nat</b> a&nbsp;<b>mangle</b>. Tabulka filter je výchozí a&nbsp;používá se při tvorbě paketových a&nbsp;aplikačních firewallů. Zbylé tabulky budou popsány později.</p>
+		
+		<p>Takhle vypadá základní syntaxe příkazu iptables:</p>
+		
+		<p class="kod">iptables [tabulka] [akce] [chain] [ip_část] [match] [target] [target_info]</p>
+	   
+	   <p>Při vytváření pravidla je nutné zvolit správnou tabulku přepínačem&nbsp;<i>-t</i>. Každá tabulka má své řetězy (chain), které určují, kdy se během zpracovávání paketu má dané pravidlo použít. Dojde-li ke shodě paketu s&nbsp;pravidlem, tak se provede požadovaná akce. Příkladem akce je například zahození paketu (DROP).</p>
+	   <span class="vPravo">Zdroj: [<a href="#c1">1</a>]</span><br />
+	   
+		
+      </div>                   
+      <div class="podcast">                        
+        <h2 id="2">NAT</h2>               
+        <p>Network Address Translation (NAT) je funkce známá jako překlad adres. Obvykle je realizován mezi veřejným a&nbsp;neveřejným rozsahem adres, ale není to podmínkou. Vznikl za účelem řešení nedostatečného počtu veřejných adres&nbsp;IPv4. Jedna veřejná adresa tak může být použita i&nbsp;pro sítě se stovkami připojených zařízení, kterým jsou přiděleny neveřejné adresy. Postupné zavádění protokolu&nbsp;IPv6 by mělo zajistit dostatek veřejných adres pro každé zařízení připojené k&nbsp;internetu, což povede k&nbsp;menšímu využívání překladu adres.</p>
+		 <p>Obecný princip překladu adres spočívá v&nbsp;manipulaci s&nbsp;hlavičkou paketu&nbsp;IP. Může však také upravovat čísla portů, vše závisí na definovaných pravidlech. Během své činnosti si NAT ukládá informace o&nbsp;provedených překladech do převodní tabulky, ze které později může čerpat údaje důležité pro určení původu existujícího spojení.</p>
+		 <span class="vPravo">Zdroj: [<a href="#c2">2</a>], [<a href="#c3">3</a>]</span><br />	
+      </div>                               
+      <div class="podcast">                         
+        <h2 id="3">Tabulka nat</h2>                         
+        <p>Tabulka nat obsahuje pravidla pro úpravu adresy&nbsp;IP odesílatele resp. příjemce v&nbsp;paketu&nbsp;IP. Úprava adresy příjemce se obecně nazývá cílový NAT (DNAT) a&nbsp;úprava adresy odesílatele se obecně nazývá zdrojový NAT (SNAT).</p>
+		<p>Při práci s&nbsp;pravidly používá tabulka nat tyto řetězy:</p>
+		<ul>
+			<li>PREROUTING je řetěz pro úpravu příchozích paketů. Dojde ke změně adresy příjemce.</li>
+			<li>POSTROUTING se uplatňuje u odchozích paketů. Změněna je adresa odesílatele.</li>
+			<li>OUTPUT slouží k úpravě paketů vzniklých na lokálním počítači a upravuje se adresa příjemce. Nemá příliš velké využití.</li>
+		</ul>
+		<div class="centrovat">
+			<img class="obrazek" src="img/nat.gif" alt="znázornění řetězů a logiky tabulky nat" />
+			<p class="popisek">Logika rozhodování tabulky&nbsp;nat a&nbsp;použití jednotlivých řetězů. Zdroj: [<a href="#c4">4</a>]</p>
+		</div>
+        <p>Tabulku&nbsp;nat lze vypsat příkazem: <p class="kod"># iptables -L -n -t nat</p>
+		<span class="vPravo">Zdroj: [<a href="#c4">4</a>], [<a href="#c5">5</a>]</span><br />	
+      </div>                                      
+      <div class="podcast">                         
+        <h2 id="4">DNAT a REDIRECT</h2>                         
+        <p>DNAT umožňuje přepsání cílové adresy a&nbsp;cílového portu. K&nbsp;zápisu DNAT pravidel slouží řetěz PREROUTING, který paket zpracuje v&nbsp;okamžiku jeho vstupu na pravidlem určené rozhraní.</p>
+		
+		<p>Základní ukázkou funkce DNAT je tzv.&nbsp;přesměrování portu:</p>
+		<p class="kod"># iptables -t nat -A PREROUTING -i eth1 -p tcp --dport 80 -j DNAT --to 10.0.2.200:80</p>
+		<p>Pokud na rozhraní <i>eth1</i> vstupuje datagram s&nbsp;cílovým portem číslo 80, pak je přesměrován na adresu 10.0.2.200, port 80. Samozřejmě je možné přesměrovávat i&nbsp;na jiné číslo portu. Toho lze využít v případě, kdy chceme z&nbsp;vnější sítě ke službě přistupovat přes jiný port, než na kterém ve skutečnosti služba naslouchá.</p>
+		
+		<p>Specifikace cílového portu ale není nutná:</p>
+			<p class="kod"># iptables -t nat -A PREROUTING -i eth1 -d 10.0.0.1 -j DNAT --to 10.0.2.200</p>
+		<p>V&nbsp;tomto případě je zajištěno přesměrování veškeré komunikace z&nbsp;rozhraní <i>eth1</i> cílící na adresu 10.0.0.1. Přesměrována bude na adresu 10.0.2.200.</p>
+			<p>REDIRECT je speciálním případem DNAT. Umožňuje přepsání čísla portu bez nutnosti určení cílové adresy&nbsp;IP.</p> 
+			<p class="kod"># iptables -t nat -A PREROUTING -p tcp --dport 80 -i eth1 -j REDIRECT --to-port 3128</p>
+			<span class="vPravo">Zdroj: [<a href="#c4">4</a>], [<a href="#c5">5</a>]</span><br />
+      </div>                   
+      <div class="podcast">                         
+        <h2 id="5">SNAT a MASQERADE</h2> 
+		<p>SNAT provádí úpravu zdrojové adresy IP a&nbsp;zdrojového čísla portu. Hlavní přínos spočívá v&nbsp;možnosti použít jednu i&nbsp;více veřejných adres pro mnoho zařízení s&nbsp;neveřejnou adresou. Taková zařízení by jinak nemohla k&nbsp;síti&nbsp;WAN přistupovat, jelikož používání neveřejných adres&nbsp;IP je v sítích&nbsp;WAN zakázáno.</p>		
+			<p>Pro překlad zdrojových adres na jednu konkrétní veřejnou adresu lze použít příkaz:</p>
+			<p class="kod"># iptables -t nat -A POSTROUTING -o eth0 -j SNAT --to 1.2.3.4</p>
+			<p>SNAT používá řetěz POSTROUTING a&nbsp;upravuje hlavičky těch paketů, které směrovač opouští specifikovaným rozhraním. V&nbsp;tomto případě jde o&nbsp;rozhraní <i>eth0</i> a&nbsp;překlad je prováděn na veřejnou adresu 1.2.3.4. Používání veřejných adres však není vyžadováno.</p>
+			<p>Překládat lze i&nbsp;na určený rozsah veřejných adres&nbsp;IP:</p>
+			<p class="kod"># iptables -t nat -A POSTROUTING -o eth0 -j SNAT --to 1.2.3.4-1.2.3.8</p>
+			<p>MASQERADE je speciálním případem SNAT. Umožňuje úpravu zdrojové adresy&nbsp;IP bez nutnosti explicitního uvedení adresy, na kterou překládáme. Běžně se využivá v&nbsp;situaci, kdy maskovanou adresu předem neznáme. Může totiž být například dynamicky přidělována serverem&nbsp;DHCP.</p>
+			<p class="kod"># iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE</p>
+			<span class="vPravo">Zdroj: [<a href="#c4">4</a>], [<a href="#c5">5</a>]</span><br />
+      </div>                   
+      <div class="podcast">                         
+        <h2 id="6">Tabulka mangle</h2>                          
+        <p>Tabulka mangle umožňuje úpravu mnoha dalších hodnot v&nbsp;hlavičce paketu&nbsp;IP a&nbsp;celkovou úpravu maximální velikosti segmentu&nbsp;TCP. Používá všechny řetězy (INPUT, OUTPUT, FORWARD, PREROUTING a POSTROUTING).</p>
+		 <p>Typickým příkladem je změna hodnoty TTL (Time To Live):</p>
+		 <p class="kod"># iptables -t mangle -A PREROUTING -i eth0 -j TTL --ttl-set 64</p>
+		 <p>Všechny příchozí pakety tak dostanou novou hodnotu TTL, a&nbsp;to 64. Hodnota TTL se při průchodu směrovačem snižuje o&nbsp;jedničku. Když dosáhne hodnoty 0, tak je paket zahozen. Nedostačující hodnota TTL může být motivací pro její zvýšení.</p>
+		 <p>Hodnotu TOS (Type Of Service) lze také upravit. Slouží pro označení priority doručení paketu. Stačí použít volbu <i>--set-tos</i> a&nbsp;jeden z parametrů: Minimize-Delay, Maximize-Throughput, Maximize-Reliability, Minimize-Cost a&nbsp;Normal-Service (výchozí).</p>
+		 <span class="vPravo">Zdroj: [<a href="#c6">6</a>]</span><br />
+      </div>
+	  <div class="podcast">                         
+        <h2 id="7">MSS clamping</h2>                          
+        <p>Hodnota MSS (Maximum Segment Size) je součástí hlavičky segmentu&nbsp;TCP. Odesílatel touto hodnotou dává najevo, jakou maximální velikost segmentu dokáže přijmout. Maximální možnou velikost segmentu ovlivňují především tzv. úzká hrdla. Různá přenosová média mají různý limit velikosti přenášených dat (MTU). Při každém překročení limitu velikosti je odesílateli poslána zpráva ICMP fragmentation required, aby odesílatel mohl patřičně upravit velikost segmentu.</p>
+		 <p>Bohužel však může dojít k situaci, kdy je zpráva ICMP fragmentation required zahazována a&nbsp;odesílatel se tak o nutnosti fragmentace nedozví. Právě MSS clamping těmto situacím předchází.</p>
+		 <p class="kod"># iptables -t mangle -A FORWARD -p tcp --tcp-flags SYN,RST SYN -j TCPMSS --clamp-mss-to-pmtu</p>
+		 <p>Parametr <i>--clamp-mss-to-pmtu</i> zajistí přepsání hodnoty MSS v&nbsp;hlavičce segmentu&nbsp;TCP na nižší hodnotu. Tím se zajistí jeho průchod přes úzká hrdla v&nbsp;síti.</p>
+		 <span class="vPravo">Zdroj: [<a href="#c7">7</a>]</span><br />
+      </div>	  
+      <div class="lastone">                         
+        <h2 id="8">Literatura</h2>
+		 <p class="citace" id="c1">[1] CSABA, Botoš. Vše o iptables: úvod <i>Root.cz</i> [online]. 2006-01-10 [cit. 2017-11-11]. ISSN 1212-8309 Dostupné z: &lt;<a href="https://www.root.cz/clanky/vse-o-iptables-uvod">https://www.root.cz/clanky/vse-o-iptables-uvod</a>&gt;</p>
+		 <p class="citace" id="c2">[2] KRČMÁŘ, Petr. Proč není NAT totéž co firewall <i>Root.cz</i> [online]. 2007-06-13 [cit. 2017-11-11]. ISSN 1212-8309 Dostupné z: &lt;<a href="https://www.root.cz/clanky/proc-neni-nat-totez-co-firewall">https://www.root.cz/clanky/proc-neni-nat-totez-co-firewall</a>&gt;</p>
+        <p class="citace" id="c3">[3] KŘENEK, Miloš. Nat – výkladový slovník <i>AbcLinuxu.cz</i> [online]. 2006-08-16 [cit. 2017-11-11]. ISSN 1214-1267 Dostupné z: &lt;<a href="http://www.abclinuxu.cz/slovnik/nat">http://www.abclinuxu.cz/slovnik/nat</a>&gt;</p>
+		 <p class="citace" id="c4">[4] PETŘÍČEK, Miroslav. Stavíme firewall (2) <i>Root.cz</i> [online]. 2002-01-02 [cit. 2017-11-11]. ISSN 1212-8309 Dostupné z: &lt;<a href="https://www.root.cz/clanky/stavime-firewall-2">https://www.root.cz/clanky/stavime-firewall-2</a>&gt;</p>
+        <p class="citace" id="c5">[5] DOČEKAL, Michal. Správa linuxového serveru: Linuxový firewall, základy iptables IV <i>LinuxExpress.cz</i> [online]. 2010-08-09 [cit. 2017-11-11]. ISSN 1801-3996 Dostupné z: &lt;<a href="https://www.linuxexpres.cz/praxe/sprava-linuxoveho-serveru-linuxovy-firewall-zaklady-iptables-3">https://www.linuxexpres.cz/praxe/sprava-linuxoveho-serveru-linuxovy-firewall-zaklady-iptables-3</a>&gt;</p>
+		 <p class="citace" id="c6">[6] CSABA, Botoš. Vše o iptables: Target extensions <i>Root.cz</i> [online]. 2006-02-17 [cit. 2017-11-11]. ISSN 1212-8309 Dostupné z: &lt;<a href="https://www.root.cz/clanky/vse-o-iptables-target-extensions">https://www.root.cz/clanky/vse-o-iptables-target-extensions</a>&gt;</p>
+		 <p class="citace" id="c7">[7] CALETKA, Ondřej. Velké trable s malým MTU <i>Root.cz</i> [online]. 2013-01-07 [cit. 2017-11-11]. ISSN 1212-8309 Dostupné z: &lt;<a href="https://www.root.cz/clanky/velke-trable-s-malym-mtu">https://www.root.cz/clanky/velke-trable-s-malym-mtu</a>&gt;</p>
+                                            
+      </div>             
+    </div>       
+  </body>
+</html>
