@@ -1,0 +1,1 @@
+[{"ID":"1","Jmeno":"Spravce","Prijmeni":"Admin","DatumNarozeni":"2001-10-08","Email":"admin@root.su","Secret":"sudo","Role_ID":"0","DatumRegistrace":"2019-12-03"},{"ID":"2","Jmeno":"Frantisek","Prijmeni":"Mal\u00fd","DatumNarozeni":"2000-12-03","Email":"bezny@franta.uz","Secret":"beznyfranta","Role_ID":"1","DatumRegistrace":"2019-12-10"}]

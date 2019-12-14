@@ -1,0 +1,192 @@
+﻿body, html{
+    height: 100%;
+    margin: 0;
+    background-color: #f0f4fe;
+}
+
+body{
+    font-family: 'Tahoma', sans-serif;
+    font-size: 16px;
+    color: #666;
+}
+
+header{
+    top:0;
+    width: 100%;
+    position: fixed;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #325688;
+    height: 54px;
+}
+
+header nav a{
+    display: inline-block;
+    color: #eee;
+    text-align: center;
+    padding: 16px 16px;
+    font-size: 18px;
+    text-decoration: none;
+}
+
+header nav a:hover{
+    background-color: white;
+    color: #333;
+}
+
+header nav .nav-img{
+    width: 20px;
+    margin-right: 20px;
+}
+
+.full-width-wrapper, main{
+    width: 1250px;
+    margin: 0 auto;
+    backgrounf-color: #F5F5F5;
+}
+
+.flex-wrap{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.card {
+    text-align: left;
+    width: 300px;
+    min-height: 100px;
+    padding: 10px;
+    margin: 5px;
+}
+
+.card > img {
+    height: 120px;
+    background-color: white;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #4a4a4a;
+}
+
+.card > p{
+    text-align: justify;
+}
+
+.card > a {
+    width: 100%;
+    background-color: #333;
+    color: white;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 150%;
+    transition: 0.5s;
+    border: 1px solid rgb(60, 64, 60);
+}
+
+
+
+.card > a:hover{
+    background-color: rgba(204,208,208);
+    color: #333333;
+}
+
+footer{
+    margin-top: 20px;
+    min-height: 300px;
+    left: 0px;
+    bottom: 0px;
+    width: 100%;
+    background-color: #333;
+    color: #f2f2f2;
+}
+.btn {
+	width: 100%;
+	font-size: 150%;
+	
+}
+
+.btn tr {
+	
+	text-align: center;
+}
+
+.btn td {
+	padding-top: 2px;
+	padding-bottom: 2px;
+
+}
+
+.regtab {
+	width: 100%;
+	font-size: 120%;
+	
+}
+
+.regtab tr {
+	
+	text-align: left;
+}
+
+.regtab .rig {
+	text-align: right;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+.regtab td {
+	padding-top: 10px;
+	padding-bottom: 10px;
+
+}
+
+.regtab td input {
+	width: 50%;
+
+}
+.cen {
+	text-align: center;
+
+}
+
+.cen input {
+	background-color: #6999ea;
+	color:#222;
+	width: 40%;
+	text-align: center;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	font-size: 120%;
+
+}
+
+.cen input:hover {
+	background-color: #122055;
+	color: #eee;
+	transition: 0.5s;
+
+}
+
+.btn a:hover{
+    background-color: #aef;
+    color: #333333;
+}
+
+.btn a {
+    background-color: #26a;
+    color: white;
+    text-align: center;
+    display-block: inline;
+    text-decoration: none;
+    transition: 0.5s;
+    font-size: 16px;
+    border: 1px solid rgb(60, 64, 60);
+}
+
+footer a{
+    color: white;
+    text-decoration: underline;
+}

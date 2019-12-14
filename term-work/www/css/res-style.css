@@ -1,0 +1,50 @@
+@media (max-width: 1200px) {
+    body {
+        justify-content: space-between;
+        height: auto;
+        margin-top: 15%;
+    }
+    header {
+        justify-content: space-between;
+        height: auto;
+    }
+
+    .nav-responsive a {
+        display: block;
+    }
+
+    #header-web-title {
+        display: block;
+        align-self: flex-start;
+    }
+
+    #nav-hamburger-icon {
+        width: 60px;
+        display: block;
+        align-self: flex-start;
+    }
+
+    .card {
+        width: 100%;
+        text-align: center;
+    }
+
+
+    .full-width-wrapper, main {
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    footer section {
+        width: 100%;
+        margin: 25px;
+
+    }
+    .flex-wrap {
+        margin-top: 25%;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+    }
+}
+
