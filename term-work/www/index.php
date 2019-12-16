@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <?php
 include 'config.php';
+ob_start();
 session_start();
 function __autoload($class) //automatické načtení pomocných tříd (Pdo a Auth)
 {
