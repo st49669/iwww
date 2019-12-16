@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <?php
 include 'config.php';
-ob_start();
-session_start();
+ob_start(); //chaching pred odeslanim pro posilani v celku misto po castech
+session_start(); //zrizeni superglobalni promenne $_SESSION
 function __autoload($class) //automatické načtení pomocných tříd (Pdo a Auth)
 {
     if (file_exists('./class/' . $class . '.php')) {
