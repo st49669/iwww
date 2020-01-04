@@ -10,14 +10,14 @@ if($_SESSION["ID"] == $_GET["rel"]){ //kontrola ID relace vůči očekávané
 			<th>Cena celkem</th>
 		</tr>';
 	$id2 = $_GET['id'];
-	$stmt = $conn->query("SELECT Produkt.ID, Produkt.Nazev, rel_objednavka_produkt.Kusu, Produkt.Cena FROM rel_objednavka_produkt,Produkt 
+	$stmt = $conn->query("SELECT Produkt.ID, Produkt.Nazev, Kusu, AktCena FROM rel_objednavka_produkt,Produkt 
 	WHERE rel_objednavka_produkt.Objednavka_ID='$id2' AND Produkt.ID=rel_objednavka_produkt.Produkt_ID");
 	foreach ($stmt as $item) { //projít položky v relační tabulce M:N
 	echo '<tr>
 			<td>' . $item["Nazev"] . '</td>
-			<td>' . $item["Cena"] . '</td>
+			<td>' . $item["AktCena"] . '</td>
 			<td>' . $item["Kusu"] . '</td>
-			<td>' . ($item["Kusu"]*$item["Cena"]) . '</td >
+			<td>' . ($item["Kusu"]*$item["AktCena"]) . '</td >
 	  </tr>';
 
 	}

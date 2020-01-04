@@ -17,16 +17,17 @@ if($_SESSION["Role"] == "Admin"){
 			$stmt1->execute();
 	}
 
-	$stmt = $conn->query("SELECT objednavka.ID, objednavka.CelkovaCena, Objednavka.DatumVytvoreni, Uzivatel.Email, CONCAT(Uzivatel.Jmeno,' ',Uzivatel.Prijmeni) AS CeleJmeno, Objednavka.Zaplaceno 
+	$stmt = $conn->query("SELECT objednavka.ID, objednavka.CelkovaCena, Objednavka.DatumVytvoreni, Objednavka.DatumPlatby,
+	Uzivatel.Email, CONCAT(Uzivatel.Jmeno,' ',Uzivatel.Prijmeni) AS CeleJmeno, Objednavka.Zaplaceno 
 	FROM Objednavka,Uzivatel WHERE Uzivatel.ID=Objednavka.Uzivatel_ID ORDER BY Objednavka.Zaplaceno, Objednavka.DatumVytvoreni ASC"); //tabulka objednávek
 	echo '<table class="btn">';
 		echo '
 		<tr>
 			<th>Operace</th>
-			<th>Placeno</th>
+			<th>Datum platby</th>
 			<th>Datum vytvoření</th>
-			<th>Cele jmeno</th>
-			<th>E-mail</th>
+			<th>Jméno uživatele</th>
+			<th>Email</th>
 			<th>Cena</th>
 		</tr>';
 
@@ -34,17 +35,17 @@ if($_SESSION["Role"] == "Admin"){
 		echo '<tr>
 			<td>'; 
 			if(!empty($item["Zaplaceno"])){echo '<a href="?page=admPlat&action=zrusit&id=' . $item["ID"] . '">Zrušit platbu</a>
-				&nbsp<a href="?page=admPlat-polozka&id=' . $item["ID"] . '">Položky</a>
+				&nbsp<a href="?page=admPlat-polozky&id=' . $item["ID"] . '">Položky</a>
 				&nbsp<a href="?page=admPlat-smaz&id=' . $item["ID"] . '">Odstranit</a>
-				<td>ANO</td>
+	
 			';} else { echo '
 					<a href="?page=admPlat&action=potvrdit&id=' . $item["ID"] . '">Potvrdit platbu</a>
-					&nbsp<a href="?page=admPlat-polozka&id=' . $item["ID"] . '">Položky</a>
+					&nbsp<a href="?page=admPlat-polozky&id=' . $item["ID"] . '">Položky</a>
 					&nbsp<a href="?page=admPlat-smaz&id=' . $item["ID"] . '">Odstranit</a>
-					<td>NE</td>
 			';}
 			echo '</td>
-			<td>' . $item["DatumVytvoreni"] . '</td>
+			<td>'; if(empty($item["DatumPlatby"])) echo 'NEPLACENO</td>'; else echo $item["DatumPlatby"].'</td>';
+			echo '<td>' . $item["DatumVytvoreni"] . '</td>
 			<td> ' . $item["CeleJmeno"] . '</td>
 			<td> ' . $item["Email"] . '</td>
 			<td>' . $item["CelkovaCena"] . '</td>

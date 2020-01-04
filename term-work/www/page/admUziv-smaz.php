@@ -12,7 +12,7 @@ if($_SESSION["Role"] == "Admin"){ //zabránit přístupu neAdminům
 	<?php
 	}else{
 		echo '<h1>Tohoto uživatele nelze smazat...</h1><hr />'?>
-		<div class="btn">'
+		<div class="btn">
 			<strong><a href="<?= BASE_URL ."?page=admUziv" ?>">---&gt; Zpět &lt;---</a></strong>
 		</div>
 <?php

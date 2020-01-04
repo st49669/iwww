@@ -1,8 +1,19 @@
 <?php
 echo '
 <h1>Přihlašte se...</h1>
-<hr />
-<div class="center-wrapper">
+<hr />';
+
+if (!empty($_POST) && !empty($_POST["mail"]) && !empty($_POST["pw"])) { //kontrola vyplnění polí
+    $auth = Auth::getAuth(); //auth - singleton třída, která obsahuje info o přihlášení
+    if ($auth->login($_POST["mail"], $_POST["pw"])) {//pokus o přihlášení
+        header("Location:" . BASE_URL);
+    } else {
+        echo "<p>Přihlášení se nezdařilo. <strong>Zadali jste správné přihlašovací údaje?</strong></p>";
+    }
+} else if (!empty($_POST)) {
+    echo "<p>Zadejte prosím své <strong>přihlašovací údaje.</strong></p>";
+}
+echo '<div class="center-wrapper">
 	<form method="post">
 		<table>
 			<tr><tr><td colspan="2">&nbsp;</td></tr><tr>
@@ -16,16 +27,6 @@ echo '
 
 	</form>
 </div>';
-if (!empty($_POST) && !empty($_POST["mail"]) && !empty($_POST["pw"])) { //kontrola vyplnění polí
-    $auth = Auth::getAuth(); //auth - singleton třída, která obsahuje info o přihlášení
-    if ($auth->login($_POST["mail"], $_POST["pw"])) {//pokus o přihlášení
-        header("Location:" . BASE_URL);
-    } else {
-        echo "<p>Přihlášení se nezdařilo. <strong>Zadali jste správné přihlašovací údaje?</strong></p>";
-    }
-} else if (!empty($_POST)) {
-    echo "<p>Zadejte prosím své <strong>přihlašovací údaje.</strong></p>";
-}
 ?>
 <hr />
 <h2>Nemáte ještě účet?</h2>

@@ -28,10 +28,11 @@ class Auth
 	
 	public function login() : bool
     {
+		$shaPw = Sha::getSha()->hashPw($_POST["pw"]);
         $stmt = $this->conn->prepare("SELECT Uzivatel.ID, Jmeno, Prijmeni, DatumNarozeni, Email, Nazev FROM Uzivatel 
 			INNER JOIN Role on Role_ID = Role.ID WHERE Email = :mail and Secret = :pw");
         $stmt->bindParam(':mail', $_POST["mail"]);
-        $stmt->bindParam(':pw', $_POST["pw"]);
+        $stmt->bindParam(':pw', $shaPw);
         $stmt->execute();
         $u = $stmt->fetch();
 

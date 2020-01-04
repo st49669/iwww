@@ -34,6 +34,11 @@ if($_SESSION["Role"] == "Admin"){
 			$stmt->execute();
 			$regTry = true;
 		}
+		if (!empty($e)) {
+			echo "<hr /><h3>Produkt nelze přidat.</h3>"."<div class=\"center-wrapper\">".$e."</div>";
+		}  else if ($regTry && $_SERVER['REQUEST_METHOD'] == 'POST') {
+			header("Location:" . BASE_URL . "?page=admProd");
+		}
 	}
 
 	?>
@@ -58,13 +63,6 @@ if($_SESSION["Role"] == "Admin"){
 		<br /><br />
         <input type="submit" name="subm" value="Vložit"/>
     </form>
-	<?php
-	if (!empty($e)) {
-		echo "<hr /><h3>Produkt nelze přidat.</h3>"."<div class=\"center-wrapper\">".$e."</div>";
-	}  else if ($regTry && $_SERVER['REQUEST_METHOD'] == 'POST') {
-		header("Location:" . BASE_URL . "?page=admProd");
-	}
-	?>
 	<hr />
 	<div class="btn">
 	<strong><a href="<?= BASE_URL ."?page=admProd" ?>">---&gt; Zpět &lt;---</a></strong>

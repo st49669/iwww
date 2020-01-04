@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <?php
+ob_start();
 include 'config.php';
 session_start();
 function __autoload($class) //automatické načtení pomocných tříd (Pdo a Auth)
@@ -17,14 +18,14 @@ function __autoload($class) //automatické načtení pomocných tříd (Pdo a Au
     <link type="text/css" rel="stylesheet" href="./css/style.css" />
     <link type="text/css" rel="stylesheet" href="./css/res-style.css" />
 	<link type="text/css" rel="stylesheet" href="./css/print-style.css" />
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
 </head>
 <body>
 <header>
 	<nav id="menu">
 	<a href="<?= BASE_URL . "?page=default"?>"><img class="nav-img" src="./img/drone.png" alt="Logo webu" /><strong>DroneShop.cz</strong></a>
-    <a href="<?= BASE_URL . "?page=katalog" ?>">Katalog</a>
+	 <a href="<?= BASE_URL . "?page=katalog" ?>">Katalog</a>
     <?php if (Auth::getAuth()->hasId()) { //rozhodovací logika pro zobrazení jednotlivých stránek dle rolí
 		if ($_SESSION["Role"] == "Admin") { //pro admina?> 
             <a href="<?= BASE_URL . "?page=admProd" ?>">Správa produktů</a>
@@ -47,6 +48,7 @@ function __autoload($class) //automatické načtení pomocných tříd (Pdo a Au
     </nav>
 </header>
 <?php
+if(!empty($_GET["page"])){
     $page = "./page/" . $_GET["page"]; //přepínání mezi stránkami z parametru page
     $file = $page . ".php";
     if (file_exists($file)){ //ověření existence stránky v parametru page
@@ -59,6 +61,11 @@ function __autoload($class) //automatické načtení pomocných tříd (Pdo a Au
         include "./page/default.php";
         echo "</main>";
     }
+} else {
+        echo "<main><br /><br /><br />";
+        include "./page/default.php";
+        echo "</main>";
+}
 ?>
 </body>
 <?php

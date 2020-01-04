@@ -70,7 +70,7 @@ if (empty($_SESSION['kosik'])) {
 	<p>Celková cena: <strong>'.$celkemKC.' Kč</strong></p>
 	<div class="card"><a';
 	if (Auth::getAuth()->hasId()){ ?>
-		<a href="<?= BASE_URL . "?page=nakupDoprava&cena=" . $celkemKC . "" ?>"
+		<a href="<?= BASE_URL . "?page=nakupVolby&cena=" . $celkemKC . "" ?>"
 		<?php
 			} else { ?>
 				onclick="alert('Pro nákup je nutné se registrovat nebo přihlásit!')"

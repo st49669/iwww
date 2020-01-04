@@ -17,6 +17,13 @@ if ($regTry && $_SERVER['REQUEST_METHOD'] == 'POST' && empty($e)) {
         $stmt->bindParam(':Nazev', $_POST["Nazev"]);
         $stmt->execute();
 }
+
+if (!empty($e)) {
+    echo "<h3>Přidání položky selhalo.</h3>"."<div class=\"center-wrapper\">".$e."</div>";
+    
+} else if ($regTry && $_SERVER['REQUEST_METHOD'] == 'POST') {
+    header("Location:" . BASE_URL . "?page=admEtc");
+}
 ?>
 
 <div class="center-wrapper">
@@ -31,12 +38,3 @@ if ($regTry && $_SERVER['REQUEST_METHOD'] == 'POST' && empty($e)) {
 	</form>
 </div>
 <hr />
-
-<?php
-if (!empty($e)) {
-    echo "<h3>Přidání položky selhalo.</h3>"."<div class=\"center-wrapper\">".$e."</div>";
-    
-} else if ($regTry && $_SERVER['REQUEST_METHOD'] == 'POST') {
-    header("Location:" . BASE_URL . "?page=admEtc");
-}
-?>

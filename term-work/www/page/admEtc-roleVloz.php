@@ -8,6 +8,12 @@ if (!empty($_POST)) {
         $e .= "<p>Nebyl zadán název.</p>";
 		$regTry = false;
     }
+	if (!empty($e)) {
+		echo "<h3>Přidání položky selhalo.</h3>"."<div class=\"center-wrapper\">".$e."</div>";
+		
+	} else if ($regTry && $_SERVER['REQUEST_METHOD'] == 'POST') {
+		header("Location:" . BASE_URL . "?page=admEtc");
+	}
 }
 
 if ($regTry && $_SERVER['REQUEST_METHOD'] == 'POST' && empty($e)) {
@@ -31,12 +37,3 @@ if ($regTry && $_SERVER['REQUEST_METHOD'] == 'POST' && empty($e)) {
 	</form>
 </div>
 <hr />
-
-<?php
-if (!empty($e)) {
-    echo "<h3>Přidání položky selhalo.</h3>"."<div class=\"center-wrapper\">".$e."</div>";
-    
-} else if ($regTry && $_SERVER['REQUEST_METHOD'] == 'POST') {
-    header("Location:" . BASE_URL . "?page=admEtc");
-}
-?>

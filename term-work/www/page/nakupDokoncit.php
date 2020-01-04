@@ -25,12 +25,16 @@ if(Auth::getAuth()->hasId()){
 			$stmt->execute();
 			$stmt1 = $conn->query("SELECT MAX(ID) FROM Objednavka");
 			$aktObj = $stmt1->fetch()['MAX(ID)'];
+			
 			foreach ($_SESSION['kosik'] as $item => $mnoz) {
-				$stmt2 = $conn->prepare("INSERT INTO rel_Objednavka_Produkt (Kusu, Objednavka_ID, Produkt_ID)
-			VALUES (:mnozstvi,:obj,:prod)");
+				$stmt3 = $conn->query("SELECT Cena FROM Produkt WHERE ID='$item'");
+				$aktCena = $stmt3->fetch()['Cena'];
+				$stmt2 = $conn->prepare("INSERT INTO rel_Objednavka_Produkt (Kusu, Objednavka_ID, Produkt_ID, AktCena)
+			VALUES (:mnozstvi,:obj,:prod,:cena)");
 				$stmt2->bindParam(':prod', $item);
 				$stmt2->bindParam(':obj', $aktObj);
 				$stmt2->bindParam(':mnozstvi', $mnoz['mnoz']);
+				$stmt2->bindParam(':cena', $aktCena);
 				$stmt2->execute();
 
 			}

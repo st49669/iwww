@@ -1,0 +1,10 @@
+PRIMPOMINKY K SEMESTRALCE Z IWWW - co dodelat/upravit
+
+(Done + checked) Hash hesel (new class)
+(Done + checked) Role - nazev, do spravy uzivatelu (admUziv)
+(Done + checked) Sloucit dopravu a platbu pri objednavce (nakupDoprava, nakupPlatba)
+(Done + checked) Presmerovat zpet na info o uzivateli pri uprave (mujUcet)
+(Done + checked) Pridelat do tabulky produktu nahrani obrazku (admProd)
+(Done + checked) Chybejici udaje ve formulari psat nad formular (all)
+(Done + checked) Do tabulky M:N pridat aktualni jednotkovou cenu, aby se po zmene ceny produktu zachovala ta platna v dobe objednavky
+(Done + checked) Zabranit notice -> empty GET["page"] na indexu mimo default (index)

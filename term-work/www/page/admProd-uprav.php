@@ -34,6 +34,11 @@ if($_SESSION["Role"] == "Admin"){
 			$stmt->bindParam(':Vyrobce_ID', $_POST["Vyrobce"]);
 			$stmt->execute();
 		}
+		if (!empty($e)) {
+			echo '<hr /><h3>Úprava selhala.</h3><div class="center-wrapper">'.$e.'</div>';
+		}  else if ($regTry && $_SERVER['REQUEST_METHOD'] == 'POST') {
+			header("Location:" . BASE_URL . "?page=admProd");
+		}
 	}
 
 	$stmt = $conn->prepare("SELECT * FROM Produkt WHERE ID=:ID");
@@ -76,11 +81,7 @@ if($_SESSION["Role"] == "Admin"){
 			<input type="submit" name="subm" value="Upravit produkt"/>
 		</form>
 		<?php
-	if (!empty($e)) {
-		echo '<hr /><h3>Úprava selhala.</h3><div class="center-wrapper">'.$e.'</div>';
-	}  else if ($regTry && $_SERVER['REQUEST_METHOD'] == 'POST') {
-		header("Location:" . BASE_URL . "?page=admProd");
-	}
+	
 } else {
 	die("Přístup zamítnut");
 }

@@ -36,6 +36,11 @@ if($_SESSION["Role"] == "Admin"){
 			$stmt->bindParam(':Secret', $_POST["Secret"]);
 			$stmt->execute();
 		}
+		if (!empty($e)) {
+			echo '<hr /><h3>Úprava selhala.</h3><div class="center-wrapper">'.$e.'</div>';
+		}  else if ($regTry && $_SERVER['REQUEST_METHOD'] == 'POST') {
+			header("Location:" . BASE_URL . "?page=admUziv");
+		}
 	}
 
 	$stmt = $conn->prepare("SELECT * FROM Uzivatel WHERE ID=:ID");
@@ -70,11 +75,6 @@ if($_SESSION["Role"] == "Admin"){
 		<input type="submit" name="subm" value="Upravit uživatele"/>
 	</form>
 	<?php
-	if (!empty($e)) {
-		echo '<hr /><h3>Úprava selhala.</h3><div class="center-wrapper">'.$e.'</div>';
-	}  else if ($regTry && $_SERVER['REQUEST_METHOD'] == 'POST') {
-		header("Location:" . BASE_URL . "?page=admUziv");
-	}
 } else {
 	die("Přístup zamítnut");
 }

@@ -37,7 +37,9 @@ if($_SESSION["Role"] == "Admin"){ //zabránit přístupu neAdminům
 		echo '<input type="submit" name="subm" value="Filtrovat"/>
 		</form>
 		</p>';
-	$query = "SELECT * from Uzivatel ORDER BY " . $order; //sestavování dotazu
+	$query = "SELECT Uzivatel.ID, Uzivatel.Jmeno, Uzivatel.Prijmeni, Uzivatel.DatumNarozeni,
+	Uzivatel.Email, Role.Nazev, Uzivatel.DatumRegistrace FROM Uzivatel 
+	INNER JOIN Role on Role_ID=Role.ID ORDER BY " . $order; //sestavování dotazu
 	$stmt = $conn->query($query);
 	/* sestavení tabulky */
 	echo '<table class="btn">';
@@ -65,7 +67,7 @@ if($_SESSION["Role"] == "Admin"){ //zabránit přístupu neAdminům
 			<td>'.$item["Prijmeni"].'</td>
 			<td>'.$item["DatumNarozeni"].'</td>
 			<td>'.$item["Email"].'</td>
-			<td>'.$item["Role_ID"].'</td>
+			<td>'.$item["Nazev"].'</td>
 			<td>'.$item["DatumRegistrace"].'</td>
 		</tr >';
 	}

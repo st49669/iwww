@@ -18,6 +18,11 @@ if($_SESSION["Role"] == "Admin" && !empty($_GET["id"])){
 			$stmt->bindParam(':Nazev', $_POST["Nazev"]);
 			$stmt->execute();
 		}
+		if (!empty($e)) {
+			echo '<hr /><h3>Úprava selhala.</h3><div class="center-wrapper">'.$e.'</div>';
+		}  else if ($regTry && $_SERVER['REQUEST_METHOD'] == 'POST') {
+			header("Location:" . BASE_URL . "?page=admEtc");
+		}
 	}
 
 	$stmt = $conn->prepare("SELECT * FROM Role WHERE ID=:ID");
@@ -32,11 +37,7 @@ if($_SESSION["Role"] == "Admin" && !empty($_GET["id"])){
 		<input type="submit" name="subm" value="Upravit"/>
 	</form>
 	<?php
-	if (!empty($e)) {
-		echo '<hr /><h3>Úprava selhala.</h3><div class="center-wrapper">'.$e.'</div>';
-	}  else if ($regTry && $_SERVER['REQUEST_METHOD'] == 'POST') {
-		header("Location:" . BASE_URL . "?page=admEtc");
-	}
+	
 } else {
 	die("Přístup zakázán");
 }
